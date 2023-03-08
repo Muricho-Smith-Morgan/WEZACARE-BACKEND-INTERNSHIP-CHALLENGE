@@ -57,6 +57,4 @@ class QuestionTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class AnswerTestCase(APITestCase):
-    def setUp(self):
-        self
+git add ""
