@@ -17,8 +17,16 @@ def register(request):
 
 @api_view(['POST'])
 def login(request):
-    # authenticate user and create token
-    pass
+    username = request.data.get('username')
+    password = request.data.get('password')
+    
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        token, created = Token.objects.get_or_create(user=user)
+         return Response({'token': token.key})
+    
+    return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class QuestionList(generics.ListCreateAPIView):
@@ -54,4 +62,4 @@ class AnswerUpdate(generics.UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Answer.objects.filter(pk=self.kwargs['answer
+        return Answer.objects.filter(pk=self.kwargs['answer_id'])
